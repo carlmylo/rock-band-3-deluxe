@@ -19,6 +19,7 @@
    {dx_setting_saver dx_settings dx_sv8_dx_vers $dx_sv8_dx_vers}
    {dx_setting_saver dx_settings dx_forced_song_load_bg $dx_forced_song_load_bg}
    {dx_setting_saver dx_settings emulate_fps $emulatefps}
+   {dx_setting_saver dx_settings dx_vsync $dx_vsync}
    {dx_setting_saver dx_settings track_speed $trackspeed}
    {dx_setting_saver dx_settings trackspeed_guitar $trackspeed_guitar}
    {dx_setting_saver dx_settings trackspeed_bass $trackspeed_bass}
@@ -33,8 +34,10 @@
    {dx_setting_saver dx_settings dx_jurgen_sound $dx_jurgen_sound}
    ;{dx_setting_saver dx_settings dx_nice_sound $dx_nice_sound}
    {dx_setting_saver dx_settings dx_song_select_noise $dx_song_select_noise}
+   {dx_setting_saver dx_settings dx_scroll_sound $dx_scroll_sound}
    {dx_setting_saver dx_settings dx_whammy_fx_enabled $dx_whammy_fx}
    {dx_setting_saver dx_settings dx_instrument_fx $dx_instrument_fx}
+   {dx_setting_saver dx_settings dx_fail_flash $dx_fail_flash}
    {dx_setting_saver dx_settings dx_long_mtv_delay $dx_long_mtv_delay}
    {dx_setting_saver dx_settings dx_set_postfx $dx_postfx}
    {dx_setting_saver dx_settings dx_currentsong_prefix $dx_currentsong_prefix}

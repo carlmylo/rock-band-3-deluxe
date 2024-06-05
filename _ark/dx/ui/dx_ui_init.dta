@@ -4,8 +4,15 @@
    {set $dx_mtv_holder {array ()}}
    {set $dx_state_tracker {array ()}}
 }
+#ifndef HX_WII
+;needs font on wii
 {set $dx_song_select_rings TRUE}
+{set $dx_diff_popups TRUE}
+#endif
 {set $dx_high_score_report TRUE}
+{set $highscore_tracker ()}
+{resize $highscore_tracker 0}
+{set $dx_vsync TRUE}
 #ifdef _SHIP
 DX_LOG_CLEAR
 DX_JSON_CLEAR
@@ -14,6 +21,7 @@ DX_CURRENT_SONG_CLEAR
 {resize $dx_playlist_array 0}
 {write_file DX_PLAYLIST_DTA_PATH $dx_playlist_array}
 #endif
+{set $actually_show_checks TRUE} ;init overshell checkboxes
 {set $dx_play_a_show_active_instruments ()}
 {resize $dx_play_a_show_active_instruments 0}
 ;rb4 loosly
@@ -60,7 +68,6 @@ DX_CURRENT_SONG_CLEAR
 
 {set $dx_note_streak_popups TRUE}
 {set $dx_od_ready_popups TRUE}
-{set $dx_diff_popups TRUE}
 {set $dx_highway_text off}
 {set $dx_num_gem_tracks 0}
 {set $dx_loading_tip_var FALSE}
@@ -306,6 +313,7 @@ DX_CURRENT_SONG_CLEAR
 {set $dx_jurgen_sound FALSE}
 {set $dx_nice_sound TRUE}
 {set $dx_song_select_noise FALSE}
+{set $dx_scroll_sound TRUE}
 {set $dx_instrument_fx TRUE}
 {set $dx_whammy_fx TRUE}
 
@@ -449,6 +457,7 @@ DX_CURRENT_SONG_CLEAR
 ;in game hud
 {set $dx_crowd_meter_state dx_on}
 {set $dx_score_meter_visibility TRUE}
+{set $dx_fail_flash TRUE}
 
 
 ;currentsong formatting defauts
@@ -508,6 +517,8 @@ DX_CURRENT_SONG_CLEAR
 {set $dx_time_remaining down}
 {set $dx_current_intro_movie deluxe}
 {set $dx_splash_screen TRUE}
+{set $dx_seasonal_logos TRUE}
+{set $dx_season standard}
 {set $dx_additional_parts TRUE}
 
 {set $dx_venue_intro TRUE}
@@ -558,6 +569,13 @@ DX_CURRENT_SONG_CLEAR
    }
 }
 #endif
+
+; force vsync on after settings load if not on rpcs3, just in case
+{if {! {== $dx_detected_platform platform_rpcs3}}
+   {set $dx_vsync TRUE}
+   {rnd set_sync 1}
+}
+
 ;instrument icons, implement individual ones later
 {switch $dx_instrument_icons
    (rb3 
@@ -605,10 +623,22 @@ DX_CURRENT_SONG_CLEAR
    {set $dx_author_finder_is_enabled FALSE}
 }
 
-{if $dx_black_menu
-   {set $dx_forced_song_load_bg (TRUE ())}
+{if {== $dx_forced_song_load_bg none}
+   #ifdef HX_XBOX {set $dx_xbox_show_fallback TRUE} #endif
+   {set_elem {find $syscfg vignettes interstitials preloading_screen #ifdef HX_WII pregame_screen #else game_screen #endif} 1 (TRUE ())}
+   {set_elem {find $syscfg vignettes interstitials preloading_screen #ifdef HX_WII pregame_screen #else game_screen #endif} 2 (TRUE ())}
+   {set_elem {find $syscfg vignettes interstitials preloading_screen #ifdef HX_WII pregame_screen #else game_screen #endif} 3 (TRUE ())}
+   {set_elem {find $syscfg vignettes interstitials preloading_screen #ifdef HX_WII pregame_screen #else game_screen #endif} 4 (TRUE ())}
+   {set_elem {find $syscfg vignettes interstitials preloading_screen #ifdef HX_WII pregame_screen #else game_screen #endif} 5 (TRUE ())}
+   {set_elem {find $syscfg vignettes interstitials preloading_screen #ifdef HX_WII pregame_screen #else game_screen #endif} 6 (TRUE ())}
+   {set_elem {find $syscfg vignettes interstitials meta_loading_outro song_select_screen} 1 (TRUE ())}
+   {set_elem {find $syscfg vignettes interstitials meta_loading_outro song_select_screen} 2 (TRUE ())}
+   {set_elem {find $syscfg vignettes interstitials meta_loading_outro song_select_screen} 3 (TRUE ())}
+   {set_elem {find $syscfg vignettes interstitials meta_loading_outro song_select_screen} 4 (TRUE ())}
+   {set_elem {find $syscfg vignettes interstitials meta_loading_outro song_select_screen} 5 (TRUE ())}
 }
-{if $dx_forced_song_load_bg
+
+{if {&& $dx_forced_song_load_bg {== {! $dx_forced_song_load_bg none}}}
    {set_elem {find $syscfg vignettes interstitials preloading_screen #ifdef HX_WII pregame_screen #else game_screen #endif} 1 $dx_forced_song_load_bg}
    {set_elem {find $syscfg vignettes interstitials preloading_screen #ifdef HX_WII pregame_screen #else game_screen #endif} 2 $dx_forced_song_load_bg}
    {set_elem {find $syscfg vignettes interstitials preloading_screen #ifdef HX_WII pregame_screen #else game_screen #endif} 3 $dx_forced_song_load_bg}
@@ -621,19 +651,13 @@ DX_CURRENT_SONG_CLEAR
    {set_elem {find $syscfg vignettes interstitials meta_loading_outro song_select_screen} 4 $dx_forced_song_load_bg}
    {set_elem {find $syscfg vignettes interstitials meta_loading_outro song_select_screen} 5 $dx_forced_song_load_bg}
 }
+
 {if $dx_forced_main_menu_bg
    {set_elem {find $syscfg vignettes backdrops sv3} 1 $dx_forced_main_menu_bg}
 }
 {if $dx_forced_song_select_bg
    {set_elem {find $syscfg vignettes backdrops sv4} 1 $dx_forced_song_select_bg}
 }
-
-#ifdef HX_XBOX
-{if_else {== {sprint $dx_forced_song_load_bg} "(1 ())"}
-   {set $dx_xbox_show_fallback TRUE}
-   {set $dx_xbox_show_fallback FALSE}
-}
-#endif
 
 {switch $dx_fctype
    (ring {set $dx_fc_ring TRUE} {set $dx_fc_glow FALSE})
