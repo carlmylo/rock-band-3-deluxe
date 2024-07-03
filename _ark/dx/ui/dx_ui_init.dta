@@ -48,7 +48,7 @@ DX_CURRENT_SONG_CLEAR
 {set $dx_icon_drum_pro "d"}
 {set $dx_current_free_cam "Free camera: off"}
 {set $overshell_showing TRUE}
-{set $dx_forced_song_load_bg FALSE}
+{set $dx_forced_outro_vignette FALSE}
 {set $dx_forced_main_menu_bg FALSE}
 {set $dx_forced_song_select_bg FALSE}
 
@@ -472,7 +472,7 @@ DX_CURRENT_SONG_CLEAR
 {set $dx_game_origin_mtv_line FALSE}
 {set $dx_author_mtv_line TRUE}
 {set $dx_song_key_mtv_line FALSE}
-
+{set $dx_stars_needs_reset TRUE}
 ;set controller reassignments
 {set $dx_joypad_type_guitar kControllerGuitar}
 {set $dx_joypad_type_keys kControllerKeys}
@@ -544,9 +544,13 @@ DX_CURRENT_SONG_CLEAR
 
 {set $dx_instrument_icons rb3}
 
-#ifdef _SHIP
-{if {file_exists DX_SETTINGS_FILE_PATH} {dx_settings_dta_reader}}
+{if {file_exists DX_SETTINGS_FILE_PATH}
+   {if {> {size {read_file DX_SETTINGS_FILE_PATH}} 0}
+      {dx_settings_dta_reader}
+   }
+}
 
+#ifdef _SHIP
 {if {file_exists DX_MODIFIER_FILE_PATH} {dx_modifier_dta_reader}}
 
 {if {file_exists DX_VALUES_FILE_PATH} {dx_values_dta_reader}}
@@ -575,6 +579,13 @@ DX_CURRENT_SONG_CLEAR
    {set $dx_vsync TRUE}
    {rnd set_sync 1}
 }
+#ifdef HX_WII
+{set $dx_instrument_icons rb3}
+{set $dx_song_select_rings FALSE}
+{set $dx_diff_popups FALSE}
+{set $dx_author_finder_is_enabled FALSE}
+{set $dx_force_lod FALSE}
+#endif
 
 ;instrument icons, implement individual ones later
 {switch $dx_instrument_icons
@@ -622,35 +633,8 @@ DX_CURRENT_SONG_CLEAR
 {if $dx_ps3hw
    {set $dx_author_finder_is_enabled FALSE}
 }
-
-{if {== $dx_forced_song_load_bg none}
-   #ifdef HX_XBOX {set $dx_xbox_show_fallback TRUE} #endif
-   {set_elem {find $syscfg vignettes interstitials preloading_screen #ifdef HX_WII pregame_screen #else game_screen #endif} 1 (TRUE ())}
-   {set_elem {find $syscfg vignettes interstitials preloading_screen #ifdef HX_WII pregame_screen #else game_screen #endif} 2 (TRUE ())}
-   {set_elem {find $syscfg vignettes interstitials preloading_screen #ifdef HX_WII pregame_screen #else game_screen #endif} 3 (TRUE ())}
-   {set_elem {find $syscfg vignettes interstitials preloading_screen #ifdef HX_WII pregame_screen #else game_screen #endif} 4 (TRUE ())}
-   {set_elem {find $syscfg vignettes interstitials preloading_screen #ifdef HX_WII pregame_screen #else game_screen #endif} 5 (TRUE ())}
-   {set_elem {find $syscfg vignettes interstitials preloading_screen #ifdef HX_WII pregame_screen #else game_screen #endif} 6 (TRUE ())}
-   {set_elem {find $syscfg vignettes interstitials meta_loading_outro song_select_screen} 1 (TRUE ())}
-   {set_elem {find $syscfg vignettes interstitials meta_loading_outro song_select_screen} 2 (TRUE ())}
-   {set_elem {find $syscfg vignettes interstitials meta_loading_outro song_select_screen} 3 (TRUE ())}
-   {set_elem {find $syscfg vignettes interstitials meta_loading_outro song_select_screen} 4 (TRUE ())}
-   {set_elem {find $syscfg vignettes interstitials meta_loading_outro song_select_screen} 5 (TRUE ())}
-}
-
-{if {&& $dx_forced_song_load_bg {== {! $dx_forced_song_load_bg none}}}
-   {set_elem {find $syscfg vignettes interstitials preloading_screen #ifdef HX_WII pregame_screen #else game_screen #endif} 1 $dx_forced_song_load_bg}
-   {set_elem {find $syscfg vignettes interstitials preloading_screen #ifdef HX_WII pregame_screen #else game_screen #endif} 2 $dx_forced_song_load_bg}
-   {set_elem {find $syscfg vignettes interstitials preloading_screen #ifdef HX_WII pregame_screen #else game_screen #endif} 3 $dx_forced_song_load_bg}
-   {set_elem {find $syscfg vignettes interstitials preloading_screen #ifdef HX_WII pregame_screen #else game_screen #endif} 4 $dx_forced_song_load_bg}
-   {set_elem {find $syscfg vignettes interstitials preloading_screen #ifdef HX_WII pregame_screen #else game_screen #endif} 5 $dx_forced_song_load_bg}
-   {set_elem {find $syscfg vignettes interstitials preloading_screen #ifdef HX_WII pregame_screen #else game_screen #endif} 6 $dx_forced_song_load_bg}
-   {set_elem {find $syscfg vignettes interstitials meta_loading_outro song_select_screen} 1 $dx_forced_song_load_bg}
-   {set_elem {find $syscfg vignettes interstitials meta_loading_outro song_select_screen} 2 $dx_forced_song_load_bg}
-   {set_elem {find $syscfg vignettes interstitials meta_loading_outro song_select_screen} 3 $dx_forced_song_load_bg}
-   {set_elem {find $syscfg vignettes interstitials meta_loading_outro song_select_screen} 4 $dx_forced_song_load_bg}
-   {set_elem {find $syscfg vignettes interstitials meta_loading_outro song_select_screen} 5 $dx_forced_song_load_bg}
-}
+{set $dx_forced_outro_vignette ()}
+{resize $dx_forced_outro_vignette 0}
 
 {if $dx_forced_main_menu_bg
    {set_elem {find $syscfg vignettes backdrops sv3} 1 $dx_forced_main_menu_bg}
@@ -780,4 +764,7 @@ DX_CURRENT_SONG_CLEAR
       (dx_play_a_show_chosen_vote)
    )
 }
+#endif
+#ifdef HX_WII
+{set $dx_debug 1}
 #endif

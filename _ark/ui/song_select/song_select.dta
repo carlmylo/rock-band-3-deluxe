@@ -1891,7 +1891,7 @@
             {unless
                [waiting_for_sort]
                {song.lst set_scroll_user $user}
-               {if_else $sort_check_2
+               {if_else {&& {music_library can_headers_be_selected} $sort_check_2}
                   {do
                      {song.lst set_selected_simulate_scroll {+ {song.lst selected_pos} 1}}
                      {set $pause_scroll_sound TRUE}
@@ -1940,7 +1940,7 @@
             {unless
                [waiting_for_sort]
                {song.lst set_scroll_user $user}
-               {if_else $sort_check_2
+               {if_else {&& {music_library can_headers_be_selected} $sort_check_2}
                   {do
                      {song.lst set_selected_simulate_scroll {- {song.lst selected_pos} 1}}
                      {set $pause_scroll_sound TRUE}
@@ -2920,10 +2920,25 @@
                      set
                      mesh
                      {album_art.pic get mesh}}})
-            {album_art.pic
-               set
-               tex_file
-               {$item album_art_path}}
+            {if_else
+               #ifdef HX_PS3
+               {file_exists {sprint "songs/updates/" $token "/gen/" $token "_keep.png_ps3"}}
+               #endif
+               #ifdef HX_XBOX
+               {file_exists {sprint "songs/updates/" $token "/gen/" $token "_keep.png_xbox"}}
+               #endif
+               #ifdef HX_WII
+               {file_exists {sprint "songs/updates/" $token "/gen/" $token "_keep.png_wii"}}
+               #endif
+               {album_art.pic
+                  set
+                  tex_file
+                  {sprint "songs/updates/" $token "/" $token "_keep.png"}}
+               {album_art.pic
+                  set
+                  tex_file
+                  {$item album_art_path}}
+            }
             {album_art.pic
                set
                mesh
