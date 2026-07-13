@@ -1602,8 +1602,17 @@
             {$this update_dolby_check}
          )
          (overshell_bass_boost
-            {profile_mgr set_bass_boost {! {profile_mgr get_bass_boost}}}
-            {$this update_bass_boost_check}
+            {do
+               {profile_mgr set_bass_boost {! {profile_mgr get_bass_boost}}}
+               {if_else {profile_mgr get_bass_boost}
+                  {do
+                     {bass_boost.send set_property wet_gain -96.0}
+                     {bass_boost.send set_property dry_gain 0.0}}
+                  {do
+                     {bass_boost.send set_property wet_gain 0.0}
+                     {bass_boost.send set_property dry_gain -3.0}}}
+               {$this update_bass_boost_check}
+            }
          )
          (overshell_overscan
             {profile_mgr set_overscan {! {profile_mgr get_overscan}}}
