@@ -4852,6 +4852,10 @@
    (gender male)
    (type glasses)
 )
+(skibidi_resource
+   (gender male)
+   (type glasses)
+)
 (femaleglasses_wireframe_resource
    (gender female)
    (type glasses)
