@@ -35,10 +35,8 @@ jobs:
       - name: Merge assets into _ark
         shell: pwsh
         run: |
-          New-Item -ItemType Directory -Force -Path "_ark/char"
-          New-Item -ItemType Directory -Force -Path "_ark/dx"
-          Copy-Item -Path "rb3dx_assets/char/*" -Destination "_ark/char" -Recurse -Force
-          Copy-Item -Path "rb3dx_assets/dx/*" -Destination "_ark/dx" -Recurse -Force
+          New-Item -ItemType Directory -Force -Path "_ark"
+          Copy-Item -Path "rb3dx_assets/_ark/*" -Destination "_ark" -Recurse -Force
       - name: Set up Python 3.11
         uses: actions/setup-python@v5
         with:
