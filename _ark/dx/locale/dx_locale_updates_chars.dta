@@ -185,6 +185,7 @@
 (prefab_tadc_zooble "[TADC] Zooble")
 
 ; Luizomori
+(prefab_l4d2_hunter "[L4D2] Hunter")
 (prefab_pkmn_zekrom "[PKMN] Zekrom")
 (prefab_aro_rouon "[Furloid] Aro Rouon")
 (prefab_jjba_jotaro "[JJBA] Jotaro")
@@ -248,8 +249,8 @@
 (prefab_tadc_gummigoo "[TADC] Gummigoo")
 
 ; SpiritKurumi
-(prefab_mercy "[Overwatch] Mercy")
-(prefab_dva "[Overwatch] D.Va")
+(prefab_ow_mercy "[Overwatch] Mercy")
+(prefab_ow_dva "[Overwatch] D.Va")
 (prefab_nikki "[FN] Nikki")
 (prefab_fn_guts "[Berserk] Guts")
 (prefab_ani_ichi "[Bleach] Ichigo")
@@ -300,8 +301,8 @@
 (prefab_fn_hoshi "[VT] Hoshimachi Suisei")
 (prefab_link "[Zelda:TP] Link")
 (prefab_zelda "[Zelda:TP] Zelda")
-(prefab_2b "[Nier Automata] 2B")
-(prefab_a2 "[Nier Automata] A2")
+(prefab_nier_2b "[Nier] 2B")
+(prefab_nier_a2 "[Nier] A2")
 (prefab_ahri "[2XKO] Ahri")
 (prefab_beachahri "[2XKO] Beach Ahri")
 (prefab_coven "[2XKO] Coven Ahri")
